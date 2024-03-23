@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Viewer</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-gray-700 text-white font-sans">
+
+<div class="flex h-screen">
+    <div class="flex-1 overflow-y-auto p-8">
+        <h2 class="text-3xl font-bold mb-8">Document Preview</h2>
+        <!-- Sample list of documents -->
+        <a href="#" class="block py-3 px-6 mb-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors" onclick="loadDocument('document1.pdf')">Document 1</a>
+        <a href="#" class="block py-3 px-6 mb-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors" onclick="loadDocument('document2.pdf')">Document 2</a>
+        <a href="#" class="block py-3 px-6 mb-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors" onclick="loadDocument('document3.pdf')">Document 3</a>
+        <!-- Add more document links as needed -->
+    </div>
+    <div class="flex-1 bg-gray-700 p-8">
+        <h2 class="text-3xl font-bold mb-8">Q&A Assistant</h2>
+        <!-- AI Q&A assistant content goes here -->
+        <div id="qna-container" class="text-gray-200">
+            <!-- Q&A assistant content will be dynamically populated here -->
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+
+</body>
+</html>

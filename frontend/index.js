@@ -1,23 +1,27 @@
 document.addEventListener("DOMContentLoaded", function() {
-  const fileUploadInput = document.getElementById("fileUpload");
-  const submitButton = document.querySelector("button[type='submit']");
+  const fileInput = document.getElementById("fileInput");
+  const uploadButton = document.querySelector("button[type='submit']");
   const messageContainer = document.getElementById("messageContainer");
 
-  submitButton.addEventListener("click", function(event) {
+  uploadButton.addEventListener("click", function(event) {
       event.preventDefault(); // Prevent form submission
       
       // Check if a file is selected
-      if (fileUploadInput.files.length === 0) {
-          showMessage("Please select a file to upload.");
+      if (!fileInput.files || fileInput.files.length === 0) {
+        setTimeout(function() {
+          showMessage("Please Upload a File!");
+          // Optionally, you can reset the file input after successful upload
+          // fileInput.value = null;
+      }, 200);
           return;
       }
 
       // Simulating file upload process
       setTimeout(function() {
           showMessage("File uploaded successfully!");
-          // Optionally, you can reset the form after successful upload
-          // document.getElementById("uploadForm").reset();
-      }, 2000); // Change delay time as needed
+          // Optionally, you can reset the file input after successful upload
+          // fileInput.value = null;
+      }, 200); // Change delay time as needed
   });
 
   function showMessage(message) {
