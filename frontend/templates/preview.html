@@ -12,9 +12,11 @@
     <div class="flex-1 overflow-y-auto p-8">
         <h2 class="text-3xl font-bold mb-8">Document Preview</h2>
         <!-- Sample list of documents -->
-        <a href="#" class="block py-3 px-6 mb-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors" onclick="loadDocument('document1.pdf')">Document 1</a>
-        <a href="#" class="block py-3 px-6 mb-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors" onclick="loadDocument('document2.pdf')">Document 2</a>
-        <a href="#" class="block py-3 px-6 mb-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors" onclick="loadDocument('document3.pdf')">Document 3</a>
+        <div class="bg-white h-full">
+            <p>
+                <!-- Add document links here -->
+            </p>
+        </div>
         <!-- Add more document links as needed -->
     </div>
     <div class="flex-1 bg-gray-700 p-8">
@@ -22,6 +24,10 @@
         <!-- AI Q&A assistant content goes here -->
         <div id="qna-container" class="text-gray-200">
             <!-- Q&A assistant content will be dynamically populated here -->
+        </div>
+        <div class="mt-8">
+            <input type="text" id="prompt" class="w-full bg-gray-800 border-2 border-gray-600 focus:outline-none focus:border-blue-500 px-4 py-2 rounded-md" placeholder="Type your prompt here...">
+            <button id="submitBtn" class="mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 rounded-md">Submit</button>
         </div>
     </div>
 </div>

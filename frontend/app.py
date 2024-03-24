@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
-from transformers import pipeline
 import torch
+from transformers import pipeline
 import fitz  # PyMuPDF
 import csv
 from PIL import Image
@@ -11,10 +11,57 @@ app = Flask(__name__)
 # Define the route for the index page
 @app.route('/')
 def index():
-     return render_template('index.html', home_template='home.html')
+    return render_template('index.html')
+
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+@app.route('/preview')
+def preview():
+    return render_template('preview.html')
+
+@app.route('/qa')
+def qa():
+    return render_template('qa.html')
+
+@app.route('/upload_qa', methods=['POST', 'GET'])
+def upload_qa():
+    if request.method == 'POST':
+        uploaded_file = request.files['fileToUpload']
+        if uploaded_file.filename != '':
+            # Save the file to a designated location
+            uploaded_file_path = '' + uploaded_file.filename
+            uploaded_file.save(uploaded_file_path)
+
+            # Process the uploaded file based on its format
+            if uploaded_file.filename.endswith(".pdf"):
+                text = read_pdf(uploaded_file_path)
+            elif uploaded_file.filename.endswith(".csv"):
+                text = read_csv(uploaded_file_path)
+            elif uploaded_file.filename.endswith((".png", ".jpg", ".jpeg")):
+                text = read_image(uploaded_file_path)
+            else:
+                text = "Unsupported file format."
+
+            model = pipeline(
+                task='question-answering',
+                model='bert-large-uncased-whole-word-masking-finetuned-squad'
+            )
+
+            question = request.form['quesupload']
+            output = model(question=question, context=text)
+            ans = output["answer"]
+            return render_template('final.html', displayed_text=ans)
+
+        else:
+            return 'No file uploaded!'
+
+    return 'Invalid request method!'
+
 
 # Define the route for file upload
-@app.route('/upload', methods=['POST'])
+@app.route('/upload_file', methods=['POST', 'GET'])
 def upload_file():
     # Initialize the Hugging Face pipeline for summarization
     hf_name = "pszemraj/led-base-book-summary"
@@ -26,18 +73,19 @@ def upload_file():
 
     # Get the uploaded file from the request
     uploaded_file = request.files['file']
-    
+
     if uploaded_file.filename != '':
-        # Save the uploaded file
-        uploaded_file.save(uploaded_file.filename)
+        # Save the uploaded file to a designated location
+        uploaded_file_path = '' + uploaded_file.filename
+        uploaded_file.save(uploaded_file_path)
 
         # Process the uploaded file based on its format
         if uploaded_file.filename.endswith(".pdf"):
-            text = read_pdf(uploaded_file.filename)
+            text = read_pdf(uploaded_file_path)
         elif uploaded_file.filename.endswith(".csv"):
-            text = read_csv(uploaded_file.filename)
+            text = read_csv(uploaded_file_path)
         elif uploaded_file.filename.endswith((".png", ".jpg", ".jpeg")):
-            text = read_image(uploaded_file.filename)
+            text = read_image(uploaded_file_path)
         else:
             text = "Unsupported file format."
 
@@ -48,6 +96,7 @@ def upload_file():
         return render_template('result.html', summarized_text=summarized_text)
     else:
         return "No file uploaded"
+
 
 # Function to read PDF
 def read_pdf(file_path):

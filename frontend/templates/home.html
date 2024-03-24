@@ -3,23 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search and Upload</title>
+    <title>Student Connect</title>
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        .search-button {
+            background-color: #4f46e5;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            transition: background-color 0.3s ease;
+        }
+        .search-button:hover {
+            background-color: #4338ca;
+        }
+    </style>
 </head>
 <body class="bg-gray-900 text-white">
 
 <!-- Navigation bar -->
-<nav class="bg-gray-800 p-4">
+<nav class="flex justify-center bg-gray-900 p-4">
     <div class="container mx-auto flex justify-between items-center">
         <div>
             <h1 class="text-xl font-bold">Student Connect</h1>
         </div>
         <div>
             <ul class="flex space-x-4">
-                <li><a href="home.html" class="text-white hover:text-blue-900">Search</a></li>
-                <li><a href="upload.html" class="text-white hover:text-blue-900">Upload</a></li>
-                <li><a href="index.html" class="text-white hover:text-blue-900">Summarizer</a></li>
+              <li><a href="upload.html" class="text-white hover:text-blue-900">Upload</a></li>
+              <li><a href="{{ url_for('index') }}" class="text-white hover:text-blue-900">Summarizer</a></li>
+
+              
+              <li><a href="{{ url_for('preview') }}" class="text-white hover:text-blue-900">Preview</a></li>
+              <li><a href="{{ url_for('qa') }}" class="text-white hover:text-blue-900">Q&A Assistant</a></li>
             </ul>
         </div>
     </div>
@@ -28,40 +43,105 @@
 <div class="container mx-auto p-4">
     <div class="max-w-full mx-auto">
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold">Student Connect</h1>
+            <h1 class="text-3xl font-bold">Welcome to Student Connect</h1>
         </div>
         <div class="flex mb-4">
-            <input type="text" id="searchInput" class="w-1/2 justify-self-start px-4 py-2 rounded bg-gray-800 focus:outline-none focus:bg-gray-700 mr" name="q" placeholder="Search...">
-            <button class=""><img class="max-h-10 ml-2" src="https://th.bing.com/th/id/OIP.NYKiO70QfJjBNwVaf_Y9cgAAAA?rs=1&pid=ImgDetMain"></button>
-        </div>
-
-        <div class="flex justify-end">
-           
+            <input type="text" id="searchInput" class="w-1/2 justify-self-start px-4 py-2 rounded-l bg-gray-800 focus:outline-none focus:bg-gray-700" name="q" placeholder="Search...">
+            <button class="search-button" onclick="searchFiles()"><img class="max-h-10 ml-3" src="https://cdn1.iconfinder.com/data/icons/basic-ui-elements-color/700/09_search-1024.png"></button>
         </div>
     </div>
 </div>
 
-<!-- Message container -->
-<div id="messageContainer" class="container mx-auto p-4 flex justify-center"></div>
-
-<div class="block max-w-[18rem] rounded-lg bg-gray-900 text-white text-left text-base shadow-lg dark:bg-gray-800 dark:text-gray-300">
-  <div class="p-6">
-    <h5 class="mb-2 text-2xl font-semibold leading-tight text-primary">
-      Special Title Treatment
-    </h5>
-    <h6 class="mb-2 text-lg font-medium leading-tight text-gray-400">
-      Card Subtitle
-    </h6>
-    <p class="mb-4 text-base leading-normal">
-      Some quick example text to build on the card title and make up the bulk of the card's content.
-    </p>
-    <a href="#" class="inline-block mb-2 mr-2 text-base font-medium leading-normal text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 dark:text-primary-400">Card Link</a>
-    <a href="#" class="inline-block mb-2 text-base font-medium leading-normal text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 dark:text-primary-400">Another Link</a>
+<div class="container mx-auto p-4" id="fileResults">
+    <!-- Display search results here -->
+</div>
+<div class="container mx-auto p-4">
+  <div class="block max-w-[18rem] rounded-lg bg-gray-900 text-white text-left text-base shadow-lg dark:bg-gray-800 dark:text-gray-300">
+      <div class="p-6">
+          <a class="mb-2 text-2xl font-semibold leading-tight text-primary" href="preview.html">
+              Ethereum Smart  Contract Analysis Toolkit 
+          </a>
+          <p class="mb-4 text-base leading-normal">
+              Ethereum  smart contracts are becoming increasingly popular.
+          </p>
+          <button><img class="max-h-10" src="https://cdn-icons-png.flaticon.com/512/5365/5365618.png" id="downloadButton"></button>
+      </div>
   </div>
 </div>
-
+<div class="container mx-auto p-4">
+  <div class="block max-w-[18rem] rounded-lg bg-gray-900 text-white text-left text-base shadow-lg dark:bg-gray-800 dark:text-gray-300">
+      <div class="p-6">
+          <a class="mb-2 text-2xl font-semibold leading-tight text-primary" href="doc.html">
+              Mathematics  Assistant for Programming and Coding Interviews.
+          </a>
+          <p class="mb-4 text-base leading-normal">
+              Mathematics  is not just about solving equations, but understanding the content.
+          </p>
+          <button><img class="max-h-10" src="https://cdn-icons-png.flaticon.com/512/5365/5365618.png"></button>
+      </div>
+  </div>
 </div>
+<div class="container mx-auto p-4">
+  <div class="block max-w-[18rem] rounded-lg bg-gray-900 text-white text-left text-base shadow-lg dark:bg-gray-800 dark:text-gray-300">
+      <div class="p-6">
+          <a class="mb-2 text-2xl font-semibold leading-tight text-primary" href="pdf.html">
+              Java Algorithms Visualizer
+          </a>
+          <p class="mb-4 text-base leading-normal">
+              JAVA algorithms visualization tool that helps you understand how different data structures work by showing them in action as they are
+             a tool that visualizes various algorithms in a java environment.
+          </p>
+          <button><img class="max-h-10" src="https://cdn-icons-png.flaticon.com/512/5365/5365618.png"></button>
+      </div>
+  </div>
+</div>
+<div class="container mx-auto p-4">
+  <div class="block max-w-[18rem] rounded-lg bg-gray-900 text-white text-left text-base shadow-lg dark:bg-gray-800 dark:text-gray-300">
+      <div class="p-6">
+          <a class="mb-2 text-2xl font-semibold leading-tight text-primary" href="txt.html">
+              Finance  Calculator
+          </a>
+          <p class="mb-4 text-base leading-normal">
+              Finance  calculator provides tools to calculate financial information such as compound interest, simple interest, amortization.
+          </p>
+          <button><img class="max-h-10" src="https://cdn1.iconfinder.com/data/icons/basic-ui-elements-color/700/09_search-1024.png"></button>
+      </div>
+  </div>
+</div>
+<script>
+    function searchFiles() {
+        const searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+        const fileResultsDiv = document.getElementById('fileResults');
+        fileResultsDiv.innerHTML = ''; // Clear previous search results
 
+        // Sample PDF file data
+        const pdfFiles = [
+            { name: 'Sample1.pdf', content: 'This is the content of Sample1.pdf' },
+            { name: 'Sample2.pdf', content: 'This is the content of Sample2.pdf' },
+            { name: 'Sample3.pdf', content: 'This is the content of Sample3.pdf' }
+        ];
+
+        pdfFiles.forEach(pdfFile => {
+            // Search the content of each PDF file for the keyword
+            if (pdfFile.content.toLowerCase().includes(searchKeyword)) {
+                const resultItem = document.createElement('div');
+                resultItem.innerHTML = `
+                    <div class="block max-w-[18rem] rounded-lg bg-gray-900 text-white text-left text-base shadow-lg dark:bg-gray-800 dark:text-gray-300">
+                        <div class="p-6">
+                            <a class="mb-2 text-2xl font-semibold leading-tight text-primary" href="${pdfFile.name}">
+                                ${pdfFile.name}
+                            </a>
+                            <p class="mb-4 text-base leading-normal">
+                                Found keyword in this PDF file.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                fileResultsDiv.appendChild(resultItem);
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
