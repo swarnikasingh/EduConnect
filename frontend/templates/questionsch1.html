@@ -28,21 +28,23 @@
 
     <div>
         <h1>Generated Questions and Answers</h1>
-    <ol>
-        {% for qa in generated_text %}
-            <li>
+        <div>
+            {% for qa in mcq_questions %}
                 <p><strong>Question:</strong> {{ qa['question'] }}</p>
                 <ul>
-                    {% for answer in qa['answers'] %}
-                        <li>{{ answer }}</li>
+                    {% for option in qa['options'] %}
+                        <li>{{ option }}</li>
                     {% endfor %}
                 </ul>
-            </li>
-        {% endfor %}
-    </ol>
+                <p><strong>Correct Answer:</strong> {{ qa['answer'] }}</p>
+            {% endfor %}
+        </div>
     </div>
 
+    <script>
+         
 
+    </script>
 
 
 

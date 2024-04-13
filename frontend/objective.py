@@ -7,7 +7,7 @@ from flask import Flask, request, render_template, session, redirect, url_for
 import google.generativeai as genai
 import os
 
-genai.configure(api_key="AIzaSyCK4xu5QLJOAHVrJeg56hURcj7udE86mEY")
+genai.configure(api_key="AIzaSyB3H1V4c-Ru_gjy9CxWF_zghiprZJHmeTQ")
 
 # Set up the model
 generation_config = {
@@ -77,6 +77,7 @@ def english():
 @app.route('/generate-questions', methods=['POST'])
 def generate_questions():
     content = request.form['content']
+    
     convo = model.start_chat(history=[
   {
     "role": "user",
@@ -89,10 +90,31 @@ def generate_questions():
 ])
     convo.send_message(content)
     
-    generated_text = convo.last.text
-    
+    generated_text = [([item]) for item in convo.last.text.split('\n') if item]
     session['generated_text'] = generated_text
     return redirect(url_for('display_qa'))
+  
+def parse_questions(generated_text):
+    questions = []
+    current_question = {}
+    for item in generated_text:
+        text = item[0]
+        if text.startswith('**Questions:**'):
+            continue
+        elif text.startswith('**Answer Key:**'):
+            break
+        elif text.endswith('?'):
+            # New question starts
+            current_question = {'question': text, 'options': [], 'answer': ''}
+            questions.append(current_question)
+        elif text.startswith('(') and ')' in text:
+            # Option for the current question
+            current_question['options'].append(text)
+        else:
+            # Answer for the last question
+            current_question['answer'] = text
+
+    return questions
   
 secret_key = os.urandom(24).hex()
 app.secret_key = secret_key
@@ -101,7 +123,9 @@ app.secret_key = secret_key
 def display_qa():
     # Retrieve the questions and answers from the session
     generated_text = session.get('generated_text', [])
-    return render_template('questionsch1.html', generated_text=generated_text)
+    
+    mcq_questions = parse_questions(generated_text)
+    return render_template('questionsch1.html', mcq_questions=mcq_questions)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)

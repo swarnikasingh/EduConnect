@@ -34,7 +34,7 @@
         <h1 class="text-3xl font-bold mb-6">Chapter One</h1>
         <div class="text-lg leading-relaxed mb-6">
             <!-- Chapter content goes here -->
-            <p id="req-text">
+            <p id='req-text'>
                 Once upon a time, in a lush green forest, there lived a curious little rabbit named Ruby. Ruby loved to explore the woods and make new friends. One sunny morning, Ruby decided to visit the wise old owl, who lived on the other side of the forest. As she hopped along the path, she saw colorful flowers, tall trees, and heard the sweet songs of the birds.
             </p>
             <!-- Add more paragraphs to complete the 400 words -->
@@ -51,6 +51,7 @@
 // JavaScript functions for buttons
     function generateQuestions() {
         var content = document.getElementById('req-text').innerText;
+        console.log(content);
         fetch('/generate-questions', {
             method: 'POST',
             headers: {
@@ -58,6 +59,7 @@
             },
             body: 'content=' + encodeURIComponent(content)
         })
+        
         .then(response => {
             if (response.redirected) {
                 window.location.href = response.url;
