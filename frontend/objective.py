@@ -3,10 +3,11 @@ At the command line, only need to run once to install the package via pip:
 
 $ pip install google-generativeai
 """
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template, session, redirect, url_for
 import google.generativeai as genai
+import os
 
-genai.configure(api_key="AIzaSyDpNYPoa5g5Fd3h642J31kZdXiKUQ2BIj0")
+genai.configure(api_key="AIzaSyCK4xu5QLJOAHVrJeg56hURcj7udE86mEY")
 
 # Set up the model
 generation_config = {
@@ -52,19 +53,55 @@ convo = model.start_chat(history=[
 
 convo.send_message("""content""" )
 
-print(convo.last.text)
+# print(convo.last.text)
 
 app = Flask(__name__)
 
-@app.route('/generate_questions', methods=['POST'])
+@app.route("/") 
+def hello(): 
+    return render_template('home.html')
+  
+
+@app.route('/std1')
+def std1():
+    return render_template('std1.html')
+
+@app.route('/ch1') 
+def ch1(): 
+    return render_template('ch1.html') 
+
+@app.route('/english') 
+def english(): 
+    return render_template('english.html') 
+  
+@app.route('/generate-questions', methods=['POST'])
 def generate_questions():
-    content = request.json['content']
+    content = request.form['content']
     convo = model.start_chat(history=[
-        # Your existing conversation history setup
-    ])
+  {
+    "role": "user",
+    "parts": ["You are a mcq generator, which generates questions after the user enters the content. Make sure to first ask the user for the content and then after that generate the questions .From the content generate 10 questions each having 4 options and at the end display the answer key."]
+  },
+  {
+    "role": "model",
+    "parts": ["python\n# Ask the user for the content\ncontent = input(\"Enter the content: \")\n\n# Split the content into words\nwords = content.split()\n\n# Create a list of questions\nquestions = []\n\n# For each word in the content, create a question\nfor word in words:\n    question = \"What is the meaning of the word '{}'?\".format(word)\n    options = [\n        \"Option 1\",\n        \"Option 2\",\n        \"Option 3\",\n        \"Option 4\",\n    ]\n    questions.append((question, options))\n\n# Display the questions\nfor question, options in questions:\n    print(question)\n    for option in options:\n        print(\"  - {}\".format(option))\n\n# Display the answer key\nanswer_key = [\n    \"Option 1\",\n    \"Option 2\",\n    \"Option 3\",\n    \"Option 4\",\n]\nprint(\"Answer key:\")\nfor question, answer in zip(questions, answer_key):\n    print(\"  - {}: {}\".format(question, answer))\n"]
+  },
+])
     convo.send_message(content)
-    questions = convo.last.text  # This will contain the generated questions
-    return jsonify(questions)
+    
+    generated_text = convo.last.text
+    
+    session['generated_text'] = generated_text
+    return redirect(url_for('display_qa'))
+  
+secret_key = os.urandom(24).hex()
+app.secret_key = secret_key
+  
+@app.route('/display_qa')
+def display_qa():
+    # Retrieve the questions and answers from the session
+    generated_text = session.get('generated_text', [])
+    return render_template('questionsch1.html', generated_text=generated_text)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', debug=True, port=5000)

@@ -19,11 +19,11 @@
         <div class="justify-center">
             <ul class="flex space-x-4">
               <li><a href="upload.html" class="text-white hover:text-blue-900">Tests</a></li>
-              <li><a href="{{ url_for('index') }}" class="text-white hover:text-blue-900">Contact Teacher</a></li>
+              <li><a href="" class="text-white hover:text-blue-900">Contact Teacher</a></li>
 
               
-              <li><a href="{{ url_for('preview') }}" class="text-white hover:text-blue-900">Progress</a></li>
-              <li><a href="{{ url_for('qa') }}" class="text-white hover:text-blue-900">Login/SignUp</a></li>
+              <li><a href="" class="text-white hover:text-blue-900">Progress</a></li>
+              <li><a href="" class="text-white hover:text-blue-900">Login/SignUp</a></li>
             </ul>
         </div>
     </div>
@@ -83,7 +83,7 @@
 
 <script>
     function redirectFirst(){
-        window.location.href = './Content/std1.html'; 
+        window.location.href = '{{ url_for('std1') }}'; 
     }
     
 </script>

@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter One</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+
+    <nav class="flex justify-center bg-gray-900 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">Student Connect</h1>
+            </div>
+            <div class="justify-center">
+                <ul class="flex space-x-4">
+                  <li><a href="" class="text-white hover:text-blue-900">Tests</a></li>
+                  <li><a href="" class="text-white hover:text-blue-900">Contact Teacher</a></li>
+    
+                  
+                  <li><a href="" class="text-white hover:text-blue-900">Progress</a></li>
+                  <li><a href="" class="text-white hover:text-blue-900">Login/SignUp</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div>
+        <h1>Generated Questions and Answers</h1>
+    <ol>
+        {% for qa in generated_text %}
+            <li>
+                <p><strong>Question:</strong> {{ qa['question'] }}</p>
+                <ul>
+                    {% for answer in qa['answers'] %}
+                        <li>{{ answer }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ol>
+    </div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
