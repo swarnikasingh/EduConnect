@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter One</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+
+    <nav class="flex justify-center bg-gray-900 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">Student Connect</h1>
+            </div>
+            <div class="justify-center">
+                <ul class="flex space-x-4">
+                  <li><a href="upload.html" class="text-white hover:text-blue-900">Tests</a></li>
+                  <li><a href="{{ url_for('index') }}" class="text-white hover:text-blue-900">Contact Teacher</a></li>
+    
+                  
+                  <li><a href="{{ url_for('preview') }}" class="text-white hover:text-blue-900">Progress</a></li>
+                  <li><a href="{{ url_for('qa') }}" class="text-white hover:text-blue-900">Login/SignUp</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <hr>
+<!-- Content Section -->
+<div class="container mx-auto p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Chapter One</h1>
+        <div class="text-lg leading-relaxed mb-6">
+            <!-- Chapter content goes here -->
+            <p>
+                Once upon a time, in a lush green forest, there lived a curious little rabbit named Ruby. Ruby loved to explore the woods and make new friends. One sunny morning, Ruby decided to visit the wise old owl, who lived on the other side of the forest. As she hopped along the path, she saw colorful flowers, tall trees, and heard the sweet songs of the birds.
+            </p>
+            <!-- Add more paragraphs to complete the 400 words -->
+        </div>
+        <!-- Buttons -->
+        <div class="flex justify-between">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="nextPage()" id="next-button">Next</button>
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="playAudio()">Play Audio</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// JavaScript functions for buttons
+document.getElementById('next-button').addEventListener('click', function() {
+    var content = document.querySelector('p').innerText;
+    fetch('/generate_questions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content: content })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response containing the questions
+        // Redirect to a new page or display the questions on the current page
+    });
+
+function playAudio() {
+    // Logic to play the chapter as an audio file
+    var audio = new Audio('chapter-one-audio.mp3'); // Replace with your actual audio file path
+    audio.play();
+}
+</script>
+
+</body>
+</html>

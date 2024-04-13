@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Connect</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+   
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="flex justify-center bg-gray-900 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">Student Connect</h1>
+            </div>
+            <div class="justify-center">
+                <ul class="flex space-x-4">
+                  <li><a href="upload.html" class="text-white hover:text-blue-900">Tests</a></li>
+                  <li><a href="{{ url_for('index') }}" class="text-white hover:text-blue-900">Contact Teacher</a></li>
+    
+                  
+                  <li><a href="{{ url_for('preview') }}" class="text-white hover:text-blue-900">Progress</a></li>
+                  <li><a href="{{ url_for('qa') }}" class="text-white hover:text-blue-900">Login/SignUp</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div>
+
+<div>
+    <div>
+        <div class="flex mt-10 ml-10 justify-normal mb-5">
+            <h1 class="text-3xl font-bold"> Select the Chapter you want to Study</h1>
+    
+        </div>
+        
+        
+        <div class="max-w-full flex justify-left space-x-4 mt-10 ml-10">
+            <div class="w-32 h-32 ml-6 bg-red-500 shadow-lg shadow-red-500/50 transform perspective cursor-pointer" id="std1">
+                <p class="text-white text-lg font-bold py-14 px-4" onClick="redirectCH1()">English</p>
+            </div>
+        </div>
+    
+    </div>
+    
+</div>
+<script>
+    function redirectCH1(){
+        window.location.href = './ChaptersEnglish/ch1.html';
+    }
+</script>
+
+</body>
+
+</html>
