@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,50 +9,72 @@
 </head>
 <body class="bg-gray-900 text-white">
 
-    <nav class="flex justify-center bg-gray-900 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold">Student Connect</h1>
-            </div>
-            <div class="justify-center">
-                <ul class="flex space-x-4">
-                  <li><a href="" class="text-white hover:text-blue-900">Tests</a></li>
-                  <li><a href="" class="text-white hover:text-blue-900">Contact Teacher</a></li>
-    
-                  
-                  <li><a href="" class="text-white hover:text-blue-900">Progress</a></li>
-                  <li><a href="" class="text-white hover:text-blue-900">Login/SignUp</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div>
-        <h1>Generated Questions and Answers</h1>
+<nav class="flex justify-center bg-gray-900 p-4">
+    <div class="container mx-auto flex justify-between items-center">
         <div>
-            {% for qa in mcq_questions %}
-                <p><strong>Question:</strong> {{ qa['question'] }}</p>
-                <ul>
-                    {% for option in qa['options'] %}
-                        <li>{{ option }}</li>
-                    {% endfor %}
-                </ul>
-                <p><strong>Correct Answer:</strong> {{ qa['answer'] }}</p>
-            {% endfor %}
+            <h1 class="text-xl font-bold">Student Connect</h1>
+        </div>
+        <div class="justify-center">
+            <ul class="flex space-x-4">
+                <li><a href="" class="text-white hover:text-blue-900">Tests</a></li>
+                <li><a href="" class="text-white hover:text-blue-900">Contact Teacher</a></li>
+                <li><a href="" class="text-white hover:text-blue-900">Progress</a></li>
+                <li><a href="" class="text-white hover:text-blue-900">Login/SignUp</a></li>
+            </ul>
         </div>
     </div>
+</nav>
+<hr>
 
-    <script>
-         
+<div>
+    <h1 class="text-3xl font-bold flex justify-center m-5">Assignment Questions</h1>
+    <div class="flex justify-left ml-10 mt-10 text-xl">
+        <form id="quizForm" class="w-full">
+            {% for qa in mcq_questions %}
+                <div class="question m-4">
+                    <p><strong>Question:</strong> {{ qa['question'] }}</p>
+                    <ul>
+                        {% for option in qa['options'] %}
+                            <li>
+                                <label>
+                                    <input type="radio" name="{{ qa['question'] }}" value="{{ option }}" data-correct="{{ qa['answer'] }}">
+                                    {{ option }}
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <p class="correctAnswer" style="display: none;"><strong>Correct Answer:</strong> {{ qa['answer'] }}</p>
+                </div>
+            {% endfor %}
 
-    </script>
+            <div class="w-full flex justify-center mx-5 my-5">
+                <button type="button" id="submitBtn" class="bg-red-500 p-2 font-bold rounded-lg hover:bg-red-300">Submit Answers</button>
+                <p id="display-score"></p>
+            </div>
+
+            
+        </form>
+    </div>
+</div>
+
+<script>
 
 
-
-
-
-
+    fetch('/submit-answers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userAnswers: user_ans })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Process the 'correct' array returned from the backend
+        // Display green ticks or red crosses based on the 'correct' array
+        // Update the total marks count
+      })
+      .catch(error => console.error('Error:', error));
+</script>
 
 </body>
-
 </html>

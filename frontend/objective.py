@@ -96,25 +96,35 @@ def generate_questions():
   
 def parse_questions(generated_text):
     questions = []
+    answers = []
     current_question = {}
+    answer_key_started = False  # Flag to indicate we've reached the answer key section
+
     for item in generated_text:
         text = item[0]
         if text.startswith('**Questions:**'):
             continue
         elif text.startswith('**Answer Key:**'):
-            break
-        elif text.endswith('?'):
-            # New question starts
-            current_question = {'question': text, 'options': [], 'answer': ''}
-            questions.append(current_question)
-        elif text.startswith('(') and ')' in text:
-            # Option for the current question
-            current_question['options'].append(text)
-        else:
-            # Answer for the last question
-            current_question['answer'] = text
+            answer_key_started = True  # Start collecting answers
+            continue
 
-    return questions
+        if not answer_key_started:
+            # We are still in the questions section
+            if text.endswith('?'):
+                # New question starts
+                current_question = {'question': text, 'options': [], 'answer': ''}
+                questions.append(current_question)
+            elif text.startswith('(') and ')' in text:
+                # Option for the current question
+                current_question['options'].append(text)
+        else:
+            # We are in the answer key section
+            answers.append(item)
+            
+      
+
+    return questions, answers
+
   
 secret_key = os.urandom(24).hex()
 app.secret_key = secret_key
@@ -124,8 +134,9 @@ def display_qa():
     # Retrieve the questions and answers from the session
     generated_text = session.get('generated_text', [])
     
-    mcq_questions = parse_questions(generated_text)
-    return render_template('questionsch1.html', mcq_questions=mcq_questions)
+    mcq_questions, mcq_answers = parse_questions(generated_text)
+    
+    return render_template('questionsch1.html', mcq_questions=mcq_questions, mcq_answers=mcq_answers)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)
